@@ -1,0 +1,2 @@
+name,stores_pii,has_encryption,soc2_certified,gdpr_compliant,ccpa_compliant,cmmc_compliant,risk_score
+CloudCorp,True,True,False,True,False,False,5
