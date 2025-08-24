@@ -1,51 +1,52 @@
-incident_log = []  # Temporary in-memory log
+# models.py
 
-def log_incident(incident):
-    incident_log.append(incident)
-    return incident
+# Dummy incident log
+incident_log = [
+    {
+        "type": "Phishing",
+        "severity": "High",
+        "date": "2025-08-23",
+        "response": "Employee training and system lockdown"
+    }
+]
 
-vendor_profiles = []
+# Dummy vendor profiles
+vendor_profiles = [
+    {
+        "name": "VendorX",
+        "stores_pii": True,
+        "has_encryption": True,
+        "soc2_certified": True,
+        "gdpr_compliant": True,
+        "ccpa_compliant": True,
+        "cmmc_compliant": True
+    }
+]
 
-def score_vendor(vendor):
-    score = 0
-    if vendor.get("stores_pii"):
-        score += 2
-    if not vendor.get("has_encryption"):
-        score += 2
-    if not vendor.get("soc2_certified"):
-        score += 1
-    if not vendor.get("gdpr_compliant"):
-        score += 1
-    if not vendor.get("ccpa_compliant"):
-        score += 1
-    if not vendor.get("cmmc_compliant"):
-        score += 1
+# Function to add a vendor
+def add_vendor(data):
+    vendor_profiles.append(data)
+    return data
 
-    # Add score to vendor and return
-    vendor["risk_score"] = score
-    return vendor
+# Function to log an incident
+def log_incident(data):
+    incident_log.append(data)
+    return data
 
-def add_vendor(vendor):
-    scored = score_vendor(vendor)
-    vendor_profiles.append(scored)
-    return scored
-
+# Function to calculate compliance score
 def calculate_compliance_score():
-    score = 100
+    if not vendor_profiles:
+        return {"compliance_score": 0}
 
-    # Subtract points if vendors are non-compliant
+    total_score = 0
     for vendor in vendor_profiles:
-        score -= vendor.get("risk_score", 0)
+        score = sum([
+            vendor.get("soc2_certified", False),
+            vendor.get("gdpr_compliant", False),
+            vendor.get("ccpa_compliant", False),
+            vendor.get("cmmc_compliant", False)
+        ])
+        total_score += score / 4 * 100  # Average compliance per vendor
 
-    # Subtract points for high-severity incidents
-    for incident in incident_log:
-        if incident.get("severity", "").lower() == "high":
-            score -= 5
-        elif incident.get("severity", "").lower() == "medium":
-            score -= 3
-        elif incident.get("severity", "").lower() == "low":
-            score -= 1
-
-    # Bound the score between 0 and 100
-    score = max(0, min(score, 100))
-    return {"compliance_score": score}
+    average_score = round(total_score / len(vendor_profiles))
+    return {"compliance_score": average_score}

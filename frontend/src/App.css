@@ -1,0 +1,31 @@
+.container {
+  font-family: sans-serif;
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+.card {
+  background: #fff;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.score {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.score.good {
+  color: green;
+}
+
+.score.bad {
+  color: red;
+}
+
+ul {
+  padding-left: 1.2rem;
+}
